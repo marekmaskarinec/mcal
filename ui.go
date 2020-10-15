@@ -22,7 +22,7 @@ func GetFeed(e Events) [][]clengine.Tile {
   return w
 }
 
-func Feed(f [][]clengine.Tile) {
+func Feed(f [][]clengine.Tile, e Events) {
   var wtd [][]clengine.Tile
   var selection int
   var in string
@@ -38,12 +38,27 @@ func Feed(f [][]clengine.Tile) {
       if selection < len(f)-1 {
         selection++
       }
+    case "q":
+      break
+      return
+    case "e":
+      ShowEvent(e.e[selection])
     }
 
     wtd = clengine.DuplicateWorld(f)
     wtd[selection][1].BgColor = "white"
     wtd[selection][1].Color = "black"
     exec.Command("clear").Run()
+    fmt.Println("FEED")
+    fmt.Println("____")
     clengine.DrawWorld(wtd)
   }
+}
+
+func ShowEvent(e Event) {
+  fmt.Println("EVENT")
+  fmt.Println("_____")
+  fmt.Printf("%d.%d.\n", e.Date.Day, e.Date.Month)
+  fmt.Println(e.Title)
+  fmt.Println(e.Description)
 }
