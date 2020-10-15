@@ -48,7 +48,6 @@ func MakeHeader(w [][]clengine.Tile, name string) [][]clengine.Tile {
   for i := range w {
     toReturn = append(toReturn, w[i])
   }
-  fmt.Println(toReturn)
   return toReturn
 }
 
@@ -68,7 +67,7 @@ func Feed(f [][]clengine.Tile, e Events) {
     clengine.DrawCentered(wtd)
 
     fmt.Scanln(&in)
-    switch in{
+    switch strings.ToLower(in){
     case "w":
       if selection > 0 {
         selection--
@@ -78,8 +77,8 @@ func Feed(f [][]clengine.Tile, e Events) {
         selection++
       }
     case "q":
-      break
-      return
+      Clear()
+      os.Exit(0)
     case "e":
       ShowEvent(e.e[selection])
     }
@@ -87,9 +86,22 @@ func Feed(f [][]clengine.Tile, e Events) {
 }
 
 func ShowEvent(e Event) {
-  fmt.Println("EVENT")
-  fmt.Println("_____")
-  fmt.Printf("%d.%d.\n", e.Date.Day, e.Date.Month)
-  fmt.Println(e.Title)
-  fmt.Println(e.Description)
+  var in string
+  var w [][]clengine.Tile
+  date := strconv.Itoa(e.Date.Day) + "." + strconv.Itoa(e.Date.Month) + "."
+  w = append(w, make([]clengine.Tile, 0))
+  w[0] = append(w[0], clengine.Tile{Tile: date})
+  w = append(w, make([]clengine.Tile, 0))
+  w[1] = append(w[1], clengine.Tile{Tile: e.Title})
+  w = append(w, make([]clengine.Tile, 0))
+  w[2] = append(w[2], clengine.Tile{Tile: e.Description})
+
+  w = MakeHeader(w, "EVENT")
+  Clear()
+  clengine.DrawCentered(w)
+  fmt.Scanln(&in)
+  if strings.ToLower(in) == "q" {
+    Clear()
+    os.Exit(0)
+  }
 }
