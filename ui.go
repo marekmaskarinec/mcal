@@ -3,9 +3,17 @@ package main
 import (
   "clengine"
   "strconv"
+  "strings"
   "fmt"
   "os/exec"
+  "os"
 )
+
+func Clear() {
+  cmd := exec.Command("clear")
+  cmd.Stdout = os.Stdout
+  cmd.Run()
+}
 
 func GetFeed(e Events) [][]clengine.Tile {
   var w [][]clengine.Tile
@@ -22,12 +30,43 @@ func GetFeed(e Events) [][]clengine.Tile {
   return w
 }
 
+func MakeHeader(w [][]clengine.Tile, name string) [][]clengine.Tile {
+  var longest, current int
+  var toReturn [][]clengine.Tile
+  for i := range w {
+    for j := range w[i] {
+      current += len(w[i][j].Tile)
+    }
+    if current > longest {
+      longest = current
+    }
+    current = 0
+  }
+  toReturn = append(toReturn, []clengine.Tile{clengine.Tile{Tile: strings.Repeat("-", longest)}})
+  toReturn = append(toReturn, []clengine.Tile{clengine.Tile{Tile: name}})
+  toReturn = append(toReturn, []clengine.Tile{clengine.Tile{Tile: strings.Repeat("-", longest)}})
+  for i := range w {
+    toReturn = append(toReturn, w[i])
+  }
+  fmt.Println(toReturn)
+  return toReturn
+}
+
 func Feed(f [][]clengine.Tile, e Events) {
   var wtd [][]clengine.Tile
   var selection int
   var in string
-  clengine.DrawWorld(f)
+
+  f = MakeHeader(f, "FEED")
+  fmt.Println(len(f))
+
   for {
+    wtd = clengine.DuplicateWorld(f)
+    wtd[selection+3][1].BgColor = "white"
+    wtd[selection+3][1].Color = "black"
+    Clear()
+    clengine.DrawCentered(wtd)
+
     fmt.Scanln(&in)
     switch in{
     case "w":
@@ -35,7 +74,7 @@ func Feed(f [][]clengine.Tile, e Events) {
         selection--
       }
     case "s":
-      if selection < len(f)-1 {
+      if selection < len(f)-4 {
         selection++
       }
     case "q":
@@ -44,14 +83,6 @@ func Feed(f [][]clengine.Tile, e Events) {
     case "e":
       ShowEvent(e.e[selection])
     }
-
-    wtd = clengine.DuplicateWorld(f)
-    wtd[selection][1].BgColor = "white"
-    wtd[selection][1].Color = "black"
-    exec.Command("clear").Run()
-    fmt.Println("FEED")
-    fmt.Println("____")
-    clengine.DrawWorld(wtd)
   }
 }
 
