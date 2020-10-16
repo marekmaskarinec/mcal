@@ -3,6 +3,7 @@ package main
 import (
   "fmt"
   "clengine"
+  "os"
 )
 
 func main() {
@@ -24,6 +25,11 @@ func main() {
         Feed(GetFeed(e), e)
       case "n":
         AddEventUI(e)
+      case "h":
+        Help()
+      case "q":
+        Clear()
+        os.Exit(0)
       }
   }
 }

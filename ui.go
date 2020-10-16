@@ -81,6 +81,8 @@ func Feed(f [][]clengine.Tile, e Events) {
       os.Exit(0)
     case "e":
       ShowEvent(e.e[selection])
+    case "a":
+      return
     }
   }
 }
@@ -165,4 +167,17 @@ func MenuUI() [][]clengine.Tile {
 
   w = MakeHeader(w, "MCAL")
   return w
+}
+
+func Help() {
+  var w [][]clengine.Tile
+
+  w, _ = clengine.EditTile(w, clengine.V2(0,0), clengine.Tile{Tile: "n: add event"})
+  w, _ = clengine.EditTile(w, clengine.V2(1,0), clengine.Tile{Tile: "f: feed"})
+  w, _ = clengine.EditTile(w, clengine.V2(2,0), clengine.Tile{Tile: "q: quit"})
+
+  w = MakeHeader(w, "MCAL")
+  Clear()
+  clengine.DrawCentered(w, false)
+  fmt.Scanln()
 }
