@@ -154,3 +154,15 @@ func AddEventUI(e Events) {
 
   e.Add(ne)
 }
+
+func MenuUI() [][]clengine.Tile {
+  var w [][]clengine.Tile
+
+  w = append(w, make([]clengine.Tile, 0))
+  w[0] = append(w[0], clengine.Tile{Tile: "Welcome to mcal. Friendly cli calendar"})
+  w = append(w, make([]clengine.Tile, 0))
+  w[1] = append(w[1], clengine.Tile{Tile: "Type `h` for help"})
+
+  w = MakeHeader(w, "MCAL")
+  return w
+}
