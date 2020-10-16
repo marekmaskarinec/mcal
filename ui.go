@@ -64,7 +64,7 @@ func Feed(f [][]clengine.Tile, e Events) {
     wtd[selection+3][1].BgColor = "white"
     wtd[selection+3][1].Color = "black"
     Clear()
-    clengine.DrawCentered(wtd)
+    clengine.DrawCentered(wtd, false)
 
     fmt.Scanln(&in)
     switch strings.ToLower(in){
@@ -98,10 +98,59 @@ func ShowEvent(e Event) {
 
   w = MakeHeader(w, "EVENT")
   Clear()
-  clengine.DrawCentered(w)
+  clengine.DrawCentered(w, false)
   fmt.Scanln(&in)
   if strings.ToLower(in) == "q" {
     Clear()
     os.Exit(0)
   }
+}
+
+func AddEventUI(e Events) {
+  var w [][]clengine.Tile
+  var in string
+  var ne Event
+  var err error
+  w = append(w, make([]clengine.Tile, 0))
+  w[0] = append(w[0], clengine.Tile{Tile: "description:"})
+  w = MakeHeader(w, "ADD EVENT")
+
+  w[3][0].Tile = "day:"
+  Clear()
+  clengine.DrawCentered(w, true)
+  fmt.Scanln(&in)
+  ne.Date.Day, err = strconv.Atoi(in)
+  if err != nil {
+    fmt.Println("bad date")
+    return
+  }
+
+  w[3][0].Tile = "month:"
+  Clear()
+  clengine.DrawCentered(w, true)
+  fmt.Scanln(&in)
+  ne.Date.Month, err = strconv.Atoi(in)
+  if err != nil {
+    fmt.Println("bad date")
+    return
+  }
+
+  if !ne.Date.CheckValidity() {
+    fmt.Println("bad date")
+    return
+  }
+
+  w[3][0].Tile = "title:"
+  Clear()
+  clengine.DrawCentered(w, true)
+  fmt.Scanln(&in)
+  ne.Title = in
+
+  w[3][0].Tile = "description:"
+  Clear()
+  clengine.DrawCentered(w, true)
+  fmt.Scanln(&in)
+  ne.Description = in
+
+  e.Add(ne)
 }

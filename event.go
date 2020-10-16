@@ -17,3 +17,9 @@ func (e *Events) Sort() {
     }
   }
 }
+
+func (e *Events) Add(ne Event) {
+  e.e = append(e.e, ne)
+  e.Sort()
+  Save(*e)
+}
