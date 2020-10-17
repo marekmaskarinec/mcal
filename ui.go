@@ -7,6 +7,7 @@ import (
   "fmt"
   "os/exec"
   "os"
+  "bufio"
 )
 
 func Clear() {
@@ -109,6 +110,7 @@ func ShowEvent(e Event) {
 }
 
 func AddEventUI(e Events) {
+  reader := bufio.NewReader(os.Stdin)
   var w [][]clengine.Tile
   var in string
   var ne Event
@@ -145,13 +147,15 @@ func AddEventUI(e Events) {
   w[3][0].Tile = "title:"
   Clear()
   clengine.DrawCentered(w, true)
-  fmt.Scanln(&in)
+  in, _ = reader.ReadString('\n')
+  in = strings.Replace(in, "\n", "", -1)
   ne.Title = in
 
   w[3][0].Tile = "description:"
   Clear()
   clengine.DrawCentered(w, true)
-  fmt.Scanln(&in)
+  in, _ = reader.ReadString('\n')
+  in = strings.Replace(in, "\n", "", -1)
   ne.Description = in
 
   e.Add(ne)
