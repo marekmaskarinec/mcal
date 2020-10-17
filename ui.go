@@ -23,8 +23,16 @@ func GetFeed(e Events) [][]clengine.Tile {
   for i := range e.e {
     w = append(w, make([]clengine.Tile, 0))
     day = strconv.Itoa(e.e[i].Date.Day)
+    day += "."
+    if e.e[i].Date.Day < 10 {
+      day += " "
+    }
     month = strconv.Itoa(e.e[i].Date.Month)
-    w[i] = append(w[i], clengine.Tile{Tile: day + "." + month + ". | ", Color: "white", BgColor: "black"})
+    month += "."
+    if e.e[i].Date.Month < 10 {
+      month += " "
+    }
+    w[i] = append(w[i], clengine.Tile{Tile: day + month + " | ", Color: "white", BgColor: "black"})
     w[i] = append(w[i], clengine.Tile{Tile: e.e[i].Title, Color: "white", BgColor: "black"})
   }
 
