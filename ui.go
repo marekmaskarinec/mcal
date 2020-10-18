@@ -89,31 +89,34 @@ func Feed(f [][]clengine.Tile, e Events) {
       Clear()
       os.Exit(0)
     case "e":
-      ShowEvent(e.e[selection])
+      ShowEvent(e, selection)
     case "a":
       return
     }
   }
 }
 
-func ShowEvent(e Event) {
+func ShowEvent(e Events, index int) {
   var in string
   var w [][]clengine.Tile
-  date := strconv.Itoa(e.Date.Day) + "." + strconv.Itoa(e.Date.Month) + "."
+  date := strconv.Itoa(e.e[index].Date.Day) + "." + strconv.Itoa(e.e[index].Date.Month) + "."
   w = append(w, make([]clengine.Tile, 0))
   w[0] = append(w[0], clengine.Tile{Tile: date})
   w = append(w, make([]clengine.Tile, 0))
-  w[1] = append(w[1], clengine.Tile{Tile: e.Title})
+  w[1] = append(w[1], clengine.Tile{Tile: e.e[index].Title})
   w = append(w, make([]clengine.Tile, 0))
-  w[2] = append(w[2], clengine.Tile{Tile: e.Description})
+  w[2] = append(w[2], clengine.Tile{Tile: e.e[index].Description})
 
   w = MakeHeader(w, "EVENT")
   Clear()
   clengine.DrawCentered(w, false)
   fmt.Scanln(&in)
-  if strings.ToLower(in) == "q" {
+  switch strings.ToLower(in) {
+  case "q":
     Clear()
     os.Exit(0)
+  case "r":
+    e.Remove(index)
   }
 }
 

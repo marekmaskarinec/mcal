@@ -23,3 +23,8 @@ func (e *Events) Add(ne Event) {
   e.Sort()
   Save(*e)
 }
+
+func (e *Events) Remove(index int) {
+  e.e = append(e.e[0:index], e.e[index+1:]...)
+  Save(*e)
+}
