@@ -8,12 +8,28 @@ import (
   "os/exec"
   "os"
   "bufio"
+  "bytes"
 )
 
 func Clear() {
   cmd := exec.Command("clear")
   cmd.Stdout = os.Stdout
   cmd.Run()
+}
+func Exec(comm, args, args2 string) string {
+  cmd := exec.Command(comm, args, args2)
+  cmd.Stdout = os.Stdout
+  var out bytes.Buffer
+  var stderr bytes.Buffer
+  cmd.Stdout = &out
+  cmd.Stderr = &stderr
+  err := cmd.Run()
+  if err != nil {
+    fmt.Println(stderr.String())
+    panic(err)
+  }
+
+  return out.String()
 }
 
 func GetFeed(e Events) [][]clengine.Tile {
@@ -195,4 +211,70 @@ func Help() {
   Clear()
   clengine.DrawCentered(w, false)
   fmt.Scanln()
+}
+
+func GetCal() [][]clengine.Tile {
+  var w [][]clengine.Tile
+  var lastWeekDay int
+  weekDays := make(map[string]int)
+  weekDays["Monday"] = 1
+  weekDays["Tuesday"] = 2
+  weekDays["Wednesday"] = 3
+  weekDays["Thursday"] = 4
+  weekDays["Friday"] = 5
+  weekDays["Saturday"] = 6
+  weekDays["Sunday"] = 7
+
+  month, err := strconv.Atoi(strings.Split(Exec("date", "-u", "+%m"), "\n")[0])
+  day, err := strconv.Atoi(strings.Split(Exec("date", "-u", "+%d"), "\n")[0])
+  weekNumSt, err := strconv.Atoi(strings.Split(Exec("date", "-u", "+%w"), "\n")[0])
+  weekDaySt := weekDays[strings.Split(Exec("date", "-u", "+%A"), "\n")[0]]
+  if err != nil {
+    panic(err)
+  }
+
+  w, _ = clengine.EditTile(w, clengine.V2(0,0), clengine.Tile{Tile: "Mo "})
+  w, _ = clengine.EditTile(w, clengine.V2(0,1), clengine.Tile{Tile: "Tu "})
+  w, _ = clengine.EditTile(w, clengine.V2(0,2), clengine.Tile{Tile: "We "})
+  w, _ = clengine.EditTile(w, clengine.V2(0,3), clengine.Tile{Tile: "Th "})
+  w, _ = clengine.EditTile(w, clengine.V2(0,4), clengine.Tile{Tile: "Fr "})
+  w, _ = clengine.EditTile(w, clengine.V2(0,5), clengine.Tile{Tile: "Sa "})
+  w, _ = clengine.EditTile(w, clengine.V2(0,6), clengine.Tile{Tile: "Su"})
+
+  weekNum := weekNumSt
+  weekDay := weekDaySt+1
+  for i:=day+1; i != 0; i-- {
+    if i >= 10 {
+      w, _ = clengine.EditTile(w, clengine.V2(weekNum+1, weekDay), clengine.Tile{Tile: strconv.Itoa(i) + " "})
+    } else {
+      w, _ = clengine.EditTile(w, clengine.V2(weekNum+1, weekDay), clengine.Tile{Tile: strconv.Itoa(i) + "  "})
+    }
+    lastWeekDay = weekDay
+    if weekDay > 1 {
+      weekDay--
+    } else if weekNum >= 1 {
+      weekNum--
+      weekDay = 7
+    } else {
+      break
+    }
+  }
+
+  for i:=lastWeekDay-1; i!=0; i-- {
+    w, _ = clengine.EditTile(w, clengine.V2(1, i), clengine.Tile{Tile: "   "})
+  }
+
+  weekNum = weekNumSt
+  weekDay = weekDaySt
+  for i:=day; i<=GetLm()[month]; i++ {
+    w, _ = clengine.EditTile(w, clengine.V2(weekNum+1, weekDay), clengine.Tile{Tile: strconv.Itoa(i) + " "})
+    if weekDay == 7 {
+      weekDay = 1
+      weekNum++
+    } else {
+      weekDay++
+    }
+  }
+  w = MakeHeader(w, "MONTH")
+  return w
 }

@@ -30,6 +30,9 @@ func main() {
       case "q":
         Clear()
         os.Exit(0)
+      case "c":
+        Clear()
+        clengine.DrawCentered(GetCal(), false)
       }
   }
 }
