@@ -245,9 +245,9 @@ func GetCal() [][]clengine.Tile {
   weekDay := weekDaySt+1
   for i:=day+1; i != 0; i-- {
     if i >= 10 {
-      w, _ = clengine.EditTile(w, clengine.V2(weekNum+1, weekDay), clengine.Tile{Tile: strconv.Itoa(i) + " "})
+      w, _ = clengine.EditTile(w, clengine.V2(weekNum, weekDay), clengine.Tile{Tile: strconv.Itoa(i) + " "})
     } else {
-      w, _ = clengine.EditTile(w, clengine.V2(weekNum+1, weekDay), clengine.Tile{Tile: strconv.Itoa(i) + "  "})
+      w, _ = clengine.EditTile(w, clengine.V2(weekNum, weekDay), clengine.Tile{Tile: strconv.Itoa(i) + "  "})
     }
     lastWeekDay = weekDay
     if weekDay > 1 {
@@ -267,7 +267,7 @@ func GetCal() [][]clengine.Tile {
   weekNum = weekNumSt
   weekDay = weekDaySt
   for i:=day; i<=GetLm()[month]; i++ {
-    w, _ = clengine.EditTile(w, clengine.V2(weekNum+1, weekDay), clengine.Tile{Tile: strconv.Itoa(i) + " "})
+    w, _ = clengine.EditTile(w, clengine.V2(weekNum, weekDay), clengine.Tile{Tile: strconv.Itoa(i) + " "})
     if weekDay == 7 {
       weekDay = 1
       weekNum++
@@ -276,5 +276,6 @@ func GetCal() [][]clengine.Tile {
     }
   }
   w = MakeHeader(w, "MONTH")
+  w[weekNumSt+3][weekDaySt].BgColor = "cyan"
   return w
 }

@@ -33,6 +33,7 @@ func main() {
       case "c":
         Clear()
         clengine.DrawCentered(GetCal(), false)
+        fmt.Scanln()
       }
   }
 }
