@@ -15,25 +15,31 @@ func main() {
 
   e = Load()
   e.Sort()
-
-  for {
-      Clear()
-      clengine.DrawCentered(menu, true)
-      fmt.Scanln(&in)
-      switch in{
-      case "f":
-        Feed(GetFeed(e), e)
-      case "n":
-        AddEventUI(e)
-      case "h":
-        Help()
-      case "q":
-        Clear()
-        os.Exit(0)
-      case "c":
-      	Clear()
-        clengine.DrawCentered(GetCal(), false)
-        fmt.Scanln()
-      }
-  }
+  if len(os.Args) >= 2 {
+  	switch os.Args[1]{
+  	case "-c":
+  		clengine.DrawCentered(GetCal(), false)
+  	}
+  } else {
+	  for {
+	      Clear()
+	      clengine.DrawCentered(menu, true)
+	      fmt.Scanln(&in)
+	      switch in{
+	      case "f":
+	        Feed(GetFeed(e), e)
+	      case "n":
+	        AddEventUI(e)
+	      case "h":
+	        Help()
+	      case "q":
+	        Clear()
+	        os.Exit(0)
+	      case "c":
+	      	Clear()
+	        clengine.DrawCentered(GetCal(), false)
+	        fmt.Scanln()
+	      }
+	  }
+	}
 }
