@@ -203,6 +203,7 @@ func MenuUI() [][]clengine.Tile {
 func Help() {
   var w [][]clengine.Tile
 
+  w, _ = clengine.EditTile(w, clengine.V2(3,0), clengine.Tile{Tile: "c: month view"})
   w, _ = clengine.EditTile(w, clengine.V2(0,0), clengine.Tile{Tile: "n: add event"})
   w, _ = clengine.EditTile(w, clengine.V2(1,0), clengine.Tile{Tile: "f: feed"})
   w, _ = clengine.EditTile(w, clengine.V2(2,0), clengine.Tile{Tile: "q: quit"})
@@ -245,9 +246,9 @@ func GetCal() [][]clengine.Tile {
   weekDay := weekDaySt+1
   for i:=day+1; i != 0; i-- {
     if i >= 10 {
-      w, _ = clengine.EditTile(w, clengine.V2(weekNum, weekDay), clengine.Tile{Tile: strconv.Itoa(i) + " "})
+      w, _ = clengine.EditTile(w, clengine.V2(weekNum-1, weekDay), clengine.Tile{Tile: strconv.Itoa(i) + " "})
     } else {
-      w, _ = clengine.EditTile(w, clengine.V2(weekNum, weekDay), clengine.Tile{Tile: strconv.Itoa(i) + "  "})
+      w, _ = clengine.EditTile(w, clengine.V2(weekNum-1, weekDay), clengine.Tile{Tile: strconv.Itoa(i) + "  "})
     }
     lastWeekDay = weekDay
     if weekDay > 1 {
@@ -267,7 +268,7 @@ func GetCal() [][]clengine.Tile {
   weekNum = weekNumSt
   weekDay = weekDaySt
   for i:=day; i<=GetLm()[month]; i++ {
-    w, _ = clengine.EditTile(w, clengine.V2(weekNum, weekDay), clengine.Tile{Tile: strconv.Itoa(i) + " "})
+    w, _ = clengine.EditTile(w, clengine.V2(weekNum-1, weekDay), clengine.Tile{Tile: strconv.Itoa(i) + " "})
     if weekDay == 7 {
       weekDay = 1
       weekNum++
@@ -276,6 +277,42 @@ func GetCal() [][]clengine.Tile {
     }
   }
   w = MakeHeader(w, "MONTH")
-  w[weekNumSt+3][weekDaySt].BgColor = "cyan"
+  w[weekNumSt+2][weekDaySt].BgColor = "cyan"
   return w
+}
+
+func (e *Events) Cal(w [][]clengine.Tile) {
+  var in string
+  wtd := clengine.DuplicateWorld(w)
+  cords := clengine.V2(0, 0)
+
+  for {
+    wtd = clengine.DuplicateWorld(w)
+    wtd[cords.X+4][cords.Y].BgColor = "white"
+    wtd[cords.X+4][cords.Y].Color = "black"
+    Clear()
+    clengine.DrawCentered(wtd, false)
+	fmt.Println(cords)
+    fmt.Scanln(&in)
+
+    switch strings.ToLower(in) {
+    case "s":
+      if cords.X < len(w)-1 {
+        cords.X++
+      }
+    case "w":
+      if cords.X > 0 {
+        cords.X--
+      }
+    case "a":
+      if cords.Y > 0 {
+        cords.Y--
+      }
+    case "d":
+      if cords.Y < len(w[0])-1 {
+        cords.Y++
+      }
+    }
+
+  }
 }

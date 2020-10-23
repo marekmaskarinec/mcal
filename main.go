@@ -31,7 +31,7 @@ func main() {
         Clear()
         os.Exit(0)
       case "c":
-        Clear()
+      	Clear()
         clengine.DrawCentered(GetCal(), false)
         fmt.Scanln()
       }
