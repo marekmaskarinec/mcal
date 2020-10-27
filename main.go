@@ -18,7 +18,10 @@ func main() {
   if len(os.Args) >= 2 {
   	switch os.Args[1]{
   	case "-c":
+  		Clear()
   		clengine.DrawCentered(GetCal(), false)
+  		fmt.Scanln()
+  		Clear()
   	}
   } else {
 	  for {
