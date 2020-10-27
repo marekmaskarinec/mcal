@@ -171,6 +171,13 @@ func AddEventUI(e Events) {
     return
   }
 
+  w[3][0].Tile = "time:"
+  Clear()
+  clengine.DrawCentered(w, true)
+  fmt.Println(&in)
+  ne.Time = in
+
+
   w[3][0].Tile = "title:"
   Clear()
   clengine.DrawCentered(w, true)

@@ -52,6 +52,7 @@ func (d *Day) CheckValidity() bool {
 
 type Event struct {
   Date Day
+  Time string
   Title string
   Description string
 }
