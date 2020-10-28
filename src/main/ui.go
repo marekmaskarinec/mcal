@@ -1,7 +1,7 @@
 package main
 
 import (
-  "clengine"
+  "github.com/marekmaskarinec/clengine"
   "strconv"
   "strings"
   "fmt"

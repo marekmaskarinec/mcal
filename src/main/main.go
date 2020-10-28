@@ -2,7 +2,7 @@ package main
 
 import (
   "fmt"
-  "clengine"
+  "github.com/marekmaskarinec/clengine"
   "os"
 )
 
