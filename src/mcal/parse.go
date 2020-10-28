@@ -10,13 +10,13 @@ func Save(toSave Events) error {
   if err != nil {
     return err
   }
-  ioutil.WriteFile("events.json", tmp, 0644)
+  ioutil.WriteFile("~/.config/mcal/events.json", tmp, 0644)
   return nil
 }
 
 func Load() Events {
   var events Events
-  dat, _ := ioutil.ReadFile("events.json")
+  dat, _ := ioutil.ReadFile("~/.config/mcal/events.json")
   json.Unmarshal(dat, &events.e)
 
   return events
