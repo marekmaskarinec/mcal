@@ -1,2 +1,0 @@
-# mcal
-Cli calendar
