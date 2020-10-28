@@ -84,31 +84,36 @@ func Feed(f [][]clengine.Tile, e Events) {
   f = MakeHeader(f, "FEED")
   fmt.Println(len(f))
 
-  for {
-    wtd = clengine.DuplicateWorld(f)
-    wtd[selection+3][1].BgColor = "white"
-    wtd[selection+3][1].Color = "black"
-    Clear()
-    clengine.DrawCentered(wtd, false)
+  if len(e.e) == 0 {
+  	f, _ = clengine.EditTile(f, clengine.V2(3, 0), clengine.Tile{Tile:"no events"})
+  	fmt.Scanln()
+  } else {
+	  for {
+	    wtd = clengine.DuplicateWorld(f)
+	    wtd[selection+3][1].BgColor = "white"
+	    wtd[selection+3][1].Color = "black"
+	    Clear()
+	    clengine.DrawCentered(wtd, false)
 
-    fmt.Scanln(&in)
-    switch strings.ToLower(in){
-    case "w":
-      if selection > 0 {
-        selection--
-      }
-    case "s":
-      if selection < len(f)-4 {
-        selection++
-      }
-    case "q":
-      Clear()
-      os.Exit(0)
-    case "e":
-      ShowEvent(e, selection)
-    case "a":
-      return
-    }
+	    fmt.Scanln(&in)
+	    switch strings.ToLower(in){
+	    case "w":
+	      if selection > 0 {
+	        selection--
+	      }
+	    case "s":
+	      if selection < len(f)-4 {
+	        selection++
+	      }
+	    case "q":
+	      Clear()
+	      os.Exit(0)
+	    case "e":
+	      ShowEvent(e, selection)
+	    case "a":
+	      return
+	    }
+	  }
   }
 }
 
