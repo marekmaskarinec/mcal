@@ -19,6 +19,7 @@ get:
 
 build:
 	@echo "starting building"
+	@if [ ! -d ~/.config/mcal ] ; then mkdir -p ~/.config/mcal ; fi
 	$(GOINSTALL) $(EXENAME)
 	@echo "building done"
 
