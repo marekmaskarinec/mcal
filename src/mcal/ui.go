@@ -302,7 +302,7 @@ func GetCal() [][]clengine.Tile {
     }
   }
   w[weekNumSt][weekDaySt].BgColor = "cyan"
-  w = MakeHeader(w, "MONTH")
+  w = MakeHeader(w, strings.Split(Exec("date", "-u", "+%B"), "\n")[0])
 
   return w
 }
