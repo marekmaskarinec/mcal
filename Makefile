@@ -20,6 +20,7 @@ get:
 build:
 	@echo "starting building"
 	@if [ ! -d ~/.config/mcal ] ; then mkdir -p ~/.config/mcal ; fi
+	@touch ~/.config/mcal/events.json
 	$(GOINSTALL) $(EXENAME)
 	@echo "building done"
 
