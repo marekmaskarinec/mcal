@@ -289,8 +289,12 @@ func GetCal() [][]clengine.Tile {
   weekNum = weekNumSt
   weekDay = weekDaySt
   for i:=day; i<=GetLm()[month]; i++ {
-    w, _ = clengine.EditTile(w, clengine.V2(weekNum, weekDay), clengine.Tile{Tile: strconv.Itoa(i) + " "})
-    if weekDay == 7 {
+	if i >= 10 {
+      w, _ = clengine.EditTile(w, clengine.V2(weekNum, weekDay), clengine.Tile{Tile: strconv.Itoa(i) + " "})
+    } else {
+      w, _ = clengine.EditTile(w, clengine.V2(weekNum, weekDay), clengine.Tile{Tile: strconv.Itoa(i) + "  "})
+    }  	
+	if weekDay == 7 {
       weekDay = 1
       weekNum++
     } else {
